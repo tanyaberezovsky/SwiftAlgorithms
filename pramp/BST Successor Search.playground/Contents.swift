@@ -1,39 +1,3 @@
-import UIKit
-
-
-func superDigit(n: String, k: Int) -> Int {
-    if k == 0 { return 0}
-   let result = n.reduce(0) { partialResult, char in
-        guard let num = Int("\(char)") else { return partialResult }
-        return partialResult + num
-    }
-    print("partial result \(result)")
-    return superDigit(n: "\(result)", k: k-1)
-}
-
-
-print(superDigit(n:"148", k: 3))
-//superDigit(n:"9875")
-
-func gridChallenge(grid: [String]) -> String {
-    guard grid.count > 1 else { return "YES"}
-    var prev = grid.first ?? ""
-    var gridChallenge = "YES"
-    for i in 1..<grid.count {
-        let current = grid[i]
-        for j in 0..<prev.count {
-            if prev[j].asciiValue > current[j].asciiValue {
-                return "NO"
-            }
-        }
-        prev = current
-    }
-    
-    return "YES"
-}
-gridChallenge(grid:["abc", "ade", "fkz"])
-
-
 import Foundation
 
 public class Node {
@@ -90,11 +54,7 @@ public class Node {
   
   public func printTree() {
     var node: Node? = self
-    
-    // print leftnode if leftnode!= null
-    // print this node
-    // print rightNode if rightNode != null
-    
+        
     if let leftNode = node?.left {
       leftNode.printTree()
     }
@@ -104,35 +64,44 @@ public class Node {
     if let rightNode = node?.right {
       rightNode.printTree()
     }
-    
-    
   }
     
-  public func findInOrderSuccessor(inputNode: Node) -> Node {
-    var nodeMin = inputNode
-    
-    
-    // print leftnode if leftnode!= null
-    // print this node
-    // print rightNode if rightNode != null
-    
-    if let leftNode = node?.left {
-      leftNode.printTree()
+    public func findInOrderSuccessor(inputNode: Node) {
+      var node: Node? = self
+          
+      if let leftNode = node?.left {
+        leftNode.printTree()
+      }
+      
+      print(node!.value)
+      
+      if let rightNode = node?.right {
+        rightNode.printTree()
+      }
     }
-    
-    print(node!.value)
-    
-    if let rightNode = node?.right {
-      rightNode.printTree()
-    }
-    
-  }
 }
 
-func findInOrderSuccessor(inputNode: Node) -> Node {
-    // your code goes here
-  return inputNode
+func findInOrderSuccessor(_ inputNode: Node) -> Node? {
+    // Case 1: If the right subtree is not empty, the successor is the node with the
+    // smallest value in the right subtree (leftmost node in the right subtree)
+    if let rightSubtree = inputNode.right {
+        var successor = rightSubtree
+        while let left = successor.left {
+            successor = left
+        }
+        return successor
+    }
+
+    // Case 2: If the right subtree is empty, the successor is the lowest ancestor
+    // whose left subtree contains inputNode
+    var ancestor = inputNode.parent
+    while ancestor != nil && ancestor!.right === inputNode {
+        inputNode = ancestor!
+        ancestor = ancestor!.parent
+    }
+    return ancestor
 }
+
 
 var tree = Node(array: [20,9, 5, 12, 11, 14, 25])
 tree.printTree()

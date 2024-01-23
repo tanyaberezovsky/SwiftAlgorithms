@@ -6,4 +6,6 @@ import Foundation
 
 //print(fizzBuzz(15))
 
-print(plusOne([3,9,9]))
+//print(plusOne([3,9,9]))
+
+print(maxProfit([7,1,5,3,6,4]))
